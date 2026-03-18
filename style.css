@@ -183,30 +183,41 @@ nav {
     width: 320px;
     height: 320px;
     border-radius: 50%;
-    background: conic-gradient(
-        transparent 0deg,
-        #2ecc71 60deg,
-        transparent 120deg,
-        #2ecc71 180deg,
-        transparent 240deg,
-        #2ecc71 300deg,
-        transparent 360deg
-    );
+    background: conic-gradient(transparent 0deg,
+            #2ecc71 60deg,
+            transparent 120deg,
+            #2ecc71 180deg,
+            transparent 240deg,
+            #2ecc71 300deg,
+            transparent 360deg);
     animation: rotate 4s linear infinite;
     filter: blur(4px);
 }
 
 /* Animação flutuar */
 @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px); }
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }
 
 /* Animação girar */
 @keyframes rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* ================= SKILLS ================= */
@@ -302,4 +313,154 @@ footer p {
     .hero-image {
         margin-top: 2rem;
     }
+}
+
+/* ================= PROJECTS ================= */
+
+.projects {
+    padding: 100px 8%;
+    background: var(--darker-bg);
+    text-align: center;
+}
+
+.projects h2 {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* GRID */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+/* CARD */
+.project-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: left;
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* efeito glow animado */
+.project-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg,
+            transparent,
+            rgba(46, 204, 113, 0.15),
+            transparent);
+    opacity: 0;
+    transition: 0.4s;
+}
+
+.project-card:hover::before {
+    opacity: 1;
+}
+
+/* hover geral */
+.project-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 25px var(--accent-glow);
+}
+
+/* TITULO */
+.project-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+/* DESCRIÇÃO */
+.desc {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--accent);
+}
+
+/* DETALHES */
+.details {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+}
+
+/* TECNOLOGIAS */
+.tech span {
+    display: inline-block;
+    background: rgba(46, 204, 113, 0.1);
+    color: var(--accent);
+    padding: 5px 10px;
+    margin: 5px 5px 10px 0;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+/* BOTÕES */
+.buttons {
+    margin-top: 10px;
+}
+
+.buttons a {
+    display: inline-block;
+    margin-right: 10px;
+    text-decoration: none;
+    background: transparent;
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    border: 1px solid var(--accent);
+    transition: 0.3s;
+}
+
+.buttons a:hover {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* RESPONSIVO PROJECTS */
+@media (max-width: 600px) {
+    .project-card {
+        padding: 1.5rem;
+    }
+}
+
+/* ================= INTERATIVIDADE BOTÕES ================= */
+
+.buttons a:active {
+    transform: scale(0.95);
+}
+
+.buttons a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: rgba(46, 204, 113, 0.2);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.buttons a:active::after {
+    opacity: 1;
+}
+
+/* efeito ripple simples */
+.buttons a {
+    position: relative;
+    overflow: hidden;
+}
+
+.buttons a span {
+    position: relative;
+    z-index: 2;
 }
