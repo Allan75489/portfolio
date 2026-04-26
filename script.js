@@ -1,105 +1,157 @@
-/* ================= MENU ATIVO ================= */
-const links = document.querySelectorAll(".nav-links a");
+    // ======================
+    // CURSOR (DESKTOP ONLY)
+    // ======================
+    if (window.innerWidth > 768) {
 
-links.forEach(link => {
-    link.addEventListener("click", () => {
-        links.forEach(l => l.classList.remove("active"));
-        link.classList.add("active");
+    const cursor = document.getElementById("cursor");
+    const ring = document.getElementById("cursorRing");
+
+    let mx = 0, my = 0;
+    let rx = 0, ry = 0;
+
+    document.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
     });
-});
 
-/* ================= SCROLL SUAVE + ATIVO AUTOMÁTICO ================= */
-const sections = document.querySelectorAll("section");
+    function animateCursor() {
+        cursor.style.left = mx + "px";
+        cursor.style.top = my + "px";
 
-window.addEventListener("scroll", () => {
-    let scrollY = window.pageYOffset;
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
 
-    sections.forEach(sec => {
-        const top = sec.offsetTop - 120;
-        const height = sec.offsetHeight;
-        const id = sec.getAttribute("id");
+        ring.style.left = rx + "px";
+        ring.style.top = ry + "px";
 
-        if (scrollY >= top && scrollY < top + height) {
-            links.forEach(a => {
-                a.classList.remove("active");
-                if (a.getAttribute("href") === `#${id}`) {
-                    a.classList.add("active");
-                }
-            });
-        }
-    });
-});
-
-/* ================= ANIMAÇÃO AO ENTRAR NA TELA ================= */
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-        }
-    });
-}, {
-    threshold: 0.2
-});
-
-document.querySelectorAll(".project-card, .skills-card").forEach(el => {
-    el.classList.add("hidden");
-    observer.observe(el);
-});
-
-/* ================= EFEITO DIGITAÇÃO (TYPEWRITER) ================= */
-const text = "Web Developer & UI Designer";
-let index = 0;
-const speed = 80;
-
-function typeEffect() {
-    const element = document.querySelector(".typing");
-
-    if (!element) return;
-
-    if (index < text.length) {
-        element.textContent += text.charAt(index);
-        index++;
-        setTimeout(typeEffect, speed);
+        requestAnimationFrame(animateCursor);
     }
-}
 
-window.addEventListener("load", typeEffect);
+    animateCursor();
 
-/* ================= BOTÕES (FEEDBACK CLIQUE) ================= */
-document.querySelectorAll(".buttons a").forEach(btn => {
-    btn.addEventListener("click", () => {
-        btn.style.transform = "scale(0.95)";
-        setTimeout(() => {
-            btn.style.transform = "scale(1)";
-        }, 150);
+    document.querySelectorAll("a, button").forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+        ring.style.transform = "translate(-50%, -50%) scale(1.8)";
+        });
+
+        el.addEventListener("mouseleave", () => {
+        ring.style.transform = "translate(-50%, -50%) scale(1)";
+        });
     });
-});
+    }
 
-/* ================= SCROLL REVEAL (FADE) ================= */
-const revealElements = document.querySelectorAll(".hero-content, .projects, .skills");
 
-const revealOnScroll = () => {
-    const triggerBottom = window.innerHeight * 0.85;
+    // ======================
+    // PARTICLES BACKGROUND
+    // ======================
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
 
-    revealElements.forEach(el => {
-        const boxTop = el.getBoundingClientRect().top;
+    function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    }
 
-        if (boxTop < triggerBottom) {
-            el.style.opacity = "1";
-            el.style.transform = "translateY(0)";
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    const pts = Array.from({ length: 60 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: Math.random() * 1.5 + 0.5,
+    }));
+
+    function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    pts.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0,245,255,0.4)";
+        ctx.fill();
+    });
+
+    pts.forEach((a, i) => {
+        pts.slice(i + 1).forEach((b) => {
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+
+        if (d < 120) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(0,245,255,${0.15 * (1 - d / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+        });
+    });
+
+    requestAnimationFrame(drawParticles);
+    }
+
+    drawParticles();
+
+
+    // ======================
+    // FADE-IN ON SCROLL
+    // ======================
+    const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("fade-up");
+        }
+        });
+    },
+    { threshold: 0.1 }
+    );
+
+    document
+    .querySelectorAll(".skill-card, .about-card, .social-card, .project-card")
+    .forEach((el) => observer.observe(el));
+
+
+    // ======================
+    // NAV MENU ACTIVE (CLICK)
+    // ======================
+    const navLinks = document.querySelectorAll(".nav-links a");
+
+    navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+        navLinks.forEach((l) => l.classList.remove("active"));
+        e.target.classList.add("active");
+    });
+    });
+
+
+    // ======================
+    // NAV MENU ACTIVE (SCROLL)
+    // ======================
+    window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    document.querySelectorAll("section").forEach((section) => {
+        const sectionTop = section.offsetTop;
+
+        if (window.scrollY >= sectionTop - 200) {
+        current = section.getAttribute("id");
         }
     });
-};
 
-window.addEventListener("scroll", revealOnScroll);
+    navLinks.forEach((link) => {
+        link.classList.remove("active");
 
-/* ================= CONFIG INICIAL ================= */
-window.addEventListener("load", () => {
-    document.querySelectorAll(".hero-content, .projects, .skills").forEach(el => {
-        el.style.opacity = "0";
-        el.style.transform = "translateY(40px)";
-        el.style.transition = "0.6s ease";
+        if (link.getAttribute("href") === "#" + current) {
+        link.classList.add("active");
+        }
     });
-
-    revealOnScroll();
-});
+    });
