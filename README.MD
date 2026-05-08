@@ -1,13 +1,13 @@
-# 💼 Allan Gustavo - Portfólio
+# 💼 Allan Gustavo - Portfolio
 
-Bem-vindo ao meu portfólio! 🚀
+Bem-vindo ao meu Portfolio! 🚀
 Este projeto foi desenvolvido para apresentar minhas habilidades, projetos e evolução como desenvolvedor front-end.
 
 ---
 
 ## 🌐 Sobre o Projeto
 
-Este é um portfólio moderno com foco em **design, interatividade e experiência do usuário (UX)**.
+Este é um Portfolio moderno com foco em **design, interatividade e experiência do usuário (UX)**.
 O objetivo é demonstrar minhas capacidades na criação de interfaces bonitas, responsivas e funcionais.
 
 ---
